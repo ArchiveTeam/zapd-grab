@@ -1,34 +1,64 @@
-Seesaw toolkit
-==============
+zapd-grab
+=========
 
-An attempt to write a toolkit for making seesaw scripts in Python, with support for concurrent downloads, uploads etc.
+Grabbing zapd.com, a service for making mobile websites with the lifespan of a mayfly.
 
-How to try it out
------------------
+If you are not familiar with Archive Team grabs: this program repeatedly grabs a user from the tracker, downloads them via HTTP, then uploads the compressed archive to a collection server.
 
-To run the example pipeline:
-
-    sudo pip install -r requirements.txt
-    ./run-pipeline --help
-    ./run-pipeline example-pipeline.py someone
-
-Point your browser to `http://127.0.0.1:8001/`
+The IRC channel for this grab is #crapd on efnet.
 
 
-Description
------------
+Running without a warrior
+-------------------------
 
-Needs the Tornado library for event-driven I/O.
+To run this outside the warrior:
 
-General idea: a set of `Task`s that can be combined into a `Pipeline` that processes `Item`s:
+(Ubuntu / Debian 7)
 
-* An `Item` is a thing that needs to be downloaded (a user, for example). It has properties that are filled by the `Task`s.
-* A `Task` is a step in the download process: it takes an item, does something with it and passes it on. Example Tasks: getting an item name from the tracker, running a download script, rsyncing the result, notifying the tracker that it's done.
-* A `Pipeline` represents a sequence of `Task`s. To make a seesaw script for a new project you'd specify a new `Pipeline`.
+    sudo apt-get update
+    sudo apt-get install -y build-essential lua5.1 liblua5.1-0-dev python python-setuptools python-dev git-core openssl libssl-dev python-pip rsync gcc make git screen
+    pip install --user seesaw
+    git clone https://github.com/ArchiveTeam/xanga-grab
+    cd xanga-grab
+    ./get-wget-lua.sh
+    
+    # Start downloading with:
+    screen ~/.local/bin/run-pipeline --disable-web-server --concurrent 3 pipeline.py YOURNICKNAME
 
-A `Task` can work on multiple `Item`s at a time (e.g., multiple Wget downloads). The concurrency can be limited by wrapping the task in a `LimitConcurrency` `Task`: this will queue the items and run them one-by-one (e.g., a single Rsync upload).
+(Debian 6)
 
-The `Pipeline` needs to be fed empty `Item` objects; by controlling the number of active `Item`s you can limit the number of items. (For example, add a new item each time an item leaves the pipeline.)
+    sudo apt-get update
+    sudo apt-get install -y build-essential lua5.1 liblua5.1-0-dev python python-setuptools python-dev git-core openssl libssl-dev python-pip rsync gcc make git screen
+    wget --no-check-certificate https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz
+    tar -xzvf pip-1.3.1.tar.gz
+    cd pip-1.3.1
+    python setup.py install --user
+    cd ..
+    ~/.local/bin/pip install --user seesaw
+    git clone https://github.com/ArchiveTeam/xanga-grab
+    cd xanga-grab
+    ./get-wget-lua.sh
 
-With the `ItemValue`, `ItemInterpolation` and `ConfigValue` classes it is possible to pass item-specific arguments to the `Task` objects. The value of these objects will be re-evaluated for each item. Examples: a path name that depends on the item name, a configurable bandwidth limit, the number of concurrent downloads.
+    # Start downloading with:
+    screen ~/.local/bin/run-pipeline --disable-web-server --concurrent 3 pipeline.py YOURNICKNAME
+
+(CentOS / RHEL / Amazon Linux)
+
+    sudo yum install lua lua-devel python-devel python-distribute git openssl-devel rsync gcc make screen
+    wget --no-check-certificate https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz
+    tar -xzvf pip-1.3.1.tar.gz
+    cd pip-1.3.1
+    python setup.py install --user
+    cd ..
+    ~/.local/bin/pip install --user seesaw
+    git clone https://github.com/ArchiveTeam/xanga-grab
+    cd xanga-grab
+    ./get-wget-lua.sh
+
+    # Start downloading with:
+    screen ~/.local/bin/run-pipeline --disable-web-server --concurrent 3 pipeline.py YOURNICKNAME
+
+For more options, run:
+
+    ~/.local/bin/run-pipeline --help
 
