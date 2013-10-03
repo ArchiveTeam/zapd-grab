@@ -91,7 +91,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = "20131002.01"
+VERSION = "20131002.02"
 USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20130430 Firefox/23.0"
 TRACKER_ID = 'zapd'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -176,7 +176,7 @@ pipeline = Pipeline(
         "--warc-header", "operator: Archive Team",
         "--warc-header", "zapd-dld-script-version: " + VERSION,
         "--warc-header", ItemInterpolation("zapd-user: %(item_name)s"),
-        ItemInterpolation("http://%(item_name)s/")
+        ItemInterpolation("http://%(item_name)s.zapd.com/")
         ],
         max_tries=5,
         accept_on_exit_code=[ 0, 8 ],
