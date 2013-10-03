@@ -91,12 +91,10 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = "20131002.00"
+VERSION = "20131002.01"
 USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20130430 Firefox/23.0"
-# TRACKER_ID = 'zapd'
-TRACKER_ID = 'test'
-TRACKER_HOST = 'localhost:8043'  # TODO: remove this when ok
-# TRACKER_HOST = 'tracker.archiveteam.org'
+TRACKER_ID = 'zapd'
+TRACKER_HOST = 'tracker.archiveteam.org'
 
 
 ###########################################################################
